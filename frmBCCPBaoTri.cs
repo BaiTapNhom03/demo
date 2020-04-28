@@ -93,16 +93,63 @@ namespace btlquanlycuahanginternet
             if (tableBaoCao.Rows.Count == 0)
             {
                 MessageBox.Show("Không có bản ghi thỏa mãn điều kiện!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtTongTien.Text = "0";
+                lblBangChu.Text = " Bằng chữ: " + "";
+
             }
             else
             {
                 MessageBox.Show("Có " + tableBaoCao.Rows.Count + " bản ghi thỏa mãn điều kiện!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Cập nhật lại tổng tiền cho báo cáo
-                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                if(cboMaPhong.Text != "")
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                    "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where MaPhong='" + cboMaPhong.Text + "'"));
+                    txtTongTien.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboThang.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
                     "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(mm,(NgayBaoTri)) = '" + cboThang.Text + "'" +
-                    " or DATEPART(qq,(NgayBaoTri))='" + cboQuy.Text + "'or DATEPART(yyyy,(NgayBaoTri))='" + txtNam.Text + "'or MaPhong='" + cboMaPhong.Text + "'"));
-                txtTongTien.Text = tong.ToString();
-                lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                    "and MaPhong='" + cboMaPhong.Text + "'"));
+                    txtTongTien.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboQuy.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                    "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(qq,(NgayBaoTri)) = '" + cboQuy.Text + "'" +
+                    "and MaPhong='" + cboMaPhong.Text + "'"));
+                    txtTongTien.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (txtNam.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                   "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(yyyy,(NgayBaoTri)) = '" + txtNam.Text + "'" +
+                   "and MaPhong='" + cboMaPhong.Text + "'"));
+                    txtTongTien.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboThang.Text != "") && (txtNam.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                  "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(mm,(NgayBaoTri)) = '" + cboThang.Text + "'" +
+                    "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayBaoTri))='" + txtNam.Text + "'"));
+                    txtTongTien.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboQuy.Text != "") && (txtNam.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(qq,(NgayBaoTri)) = '" + cboQuy.Text + "'" +
+                    "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayBaoTri))='" + txtNam.Text + "'"));
+                    txtTongTien.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }    
+
+
             }
                 tableBaoCao = Class.functions.GetDataToTable(sql);
             dataGridView_CPBT.DataSource = tableBaoCao;
@@ -195,18 +242,96 @@ namespace btlquanlycuahanginternet
             exRange.Value2 = "Tổng tiền:";
             exRange = exSheet.Cells[cot + 1][phong + 10];
             exRange.Font.Bold = true;
-            double tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+            double tong;
+            if ((cboMaPhong.Text != "") && (cboThang.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(mm,(NgayBaoTri)) = '" + cboThang.Text + "'" +
+                "and MaPhong='" + cboMaPhong.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (cboQuy.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(qq,(NgayBaoTri)) = '" + cboQuy.Text + "'" +
+                "and MaPhong='" + cboMaPhong.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (txtNam.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+               "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(yyyy,(NgayBaoTri)) = '" + txtNam.Text + "'" +
+               "and MaPhong='" + cboMaPhong.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (cboThang.Text != "") && (txtNam.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
               "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(mm,(NgayBaoTri)) = '" + cboThang.Text + "'" +
-              " or DATEPART(qq,(NgayBaoTri))='" + cboQuy.Text + "'or DATEPART(yyyy,(NgayBaoTri))='" + txtNam.Text + "'or MaPhong='" + cboMaPhong.Text + "'"));
-            exRange.Value2 = tong.ToString();
-            exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
-            exRange.Range["A1:F1"].MergeCells = true;
-            exRange.Range["A1:F1"].Font.Bold = true;
-            exRange.Range["A1:F1"].Font.Italic = true;
-            exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
-           
-            exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
-            exRange = exSheet.Cells[4][phong + 13]; //Ô A1 
+                "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayBaoTri))='" + txtNam.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (cboQuy.Text != "") && (txtNam.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+            "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where DATEPART(qq,(NgayBaoTri)) = '" + cboQuy.Text + "'" +
+                "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayBaoTri))='" + txtNam.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+
+            }
+            if (cboMaPhong.Text != "")
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(ThanhTien) from ChiTietBaoTri join BaoTri on ChiTietBaoTri.MaBaoTri = BaoTri.MaBaoTri " +
+                "join MayTinh on ChiTietBaoTri.MaMay=MayTinh.MaMay where MaPhong='" + cboMaPhong.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+
+
+
+
+                exRange = exSheet.Cells[4][phong + 13]; //Ô A1 
             exRange.Range["A1:C1"].MergeCells = true;
             exRange.Range["A1:C1"].Font.Italic = true;
             exRange.Range["A1:C1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;

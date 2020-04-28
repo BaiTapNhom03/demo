@@ -25,8 +25,11 @@ namespace btlquanlycuahanginternet
             txtMaMay.ReadOnly = true;
             txtTenMay.ReadOnly = true;
             txtTenPhong.ReadOnly = true;
+            txtNgayThue.Enabled = false;
+            txtGioVao.Enabled = false;
             functions.FillCombo("select MaPhong from Phong ", cboMaPhong, "MaPhong", "MaPhong");
             cboMaPhong.SelectedIndex = -1;
+            txtma.Focus();
             loadDataToGridView();
             dataGridView_ChonMay.DataSource = null;
         }
@@ -56,6 +59,8 @@ namespace btlquanlycuahanginternet
             txtTenMay.Text = "";
             cboMaPhong.Text = "";
             txtTenPhong.Text = "";
+            txtNgayThue.Text = "";
+            txtGioVao.Text = "";
         }
         private void dataGridView_ChonMay_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -67,6 +72,8 @@ namespace btlquanlycuahanginternet
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
             string sql;
+            txtNgayThue.Text = DateTime.Now.ToShortDateString();
+            txtGioVao.Text = DateTime.Now.TimeOfDay.ToString();
             sql = "SELECT MaSTT FROM ThueMay WHERE MaSTT='" + txtma.Text.Trim() + "'";
             if (functions.CheckKey(sql))
             {
@@ -113,6 +120,7 @@ namespace btlquanlycuahanginternet
         {
             ResetValues();
             dataGridView_ChonMay.DataSource = null;
+            btnTimKiem.Enabled = true;
         }
 
         private void btnHienThi_Click(object sender, EventArgs e)
@@ -126,9 +134,21 @@ namespace btlquanlycuahanginternet
                 dataGridView_ChonMay.DataSource = tableChonMay;
             }
         }
-
         private void btnDangKi_Click(object sender, EventArgs e)
         {
+            if (txtMaMay.Text == "")
+            {
+                MessageBox.Show("Bạn chưa chọn máy nào!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            frmTraMay frm = new frmTraMay();
+            frm.Message = txtGioVao.Text;
+            frm.Message1 = cboMaPhong.Text;
+            frm.Message2 = txtTenKhach.Text;
+            frm.Message3 = txtMaMay.Text;
+            frm.Message4 = txtNgayThue.Text;
+            frm.Message5 = txtma.Text;
+            frm.ShowDialog();
             if (txtMaMay.Text == "")
             {
                 MessageBox.Show("Bạn chưa chọn máy nào!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -139,8 +159,10 @@ namespace btlquanlycuahanginternet
             {
                 MessageBox.Show("  Mã STT:  " + txtma.Text +"" +
                     "    Tên Khách:  "+txtTenKhach.Text+"" +
-                    "    Mã Phòng:  "+cboMaPhong.Text+",   Tên Phòng:  "+txtTenPhong.Text+"" +
-                    "    Mã Máy:    "+txtMaMay.Text+",     Tên Máy:    "+txtTenMay.Text+"", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "    Mã Phòng:  "+cboMaPhong.Text+""+"Tên Phòng:  "+txtTenPhong.Text+"" +
+                    "    Mã Máy:    "+txtMaMay.Text+""+"  Tên Máy:    "+txtTenMay.Text+""+
+                    "    Ngày Thuê: "+txtNgayThue.Text+",  Giờ Vào:    "+txtGioVao.Text,                   
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 loadDataToGridView();
                 ResetValues();
             }
@@ -148,11 +170,14 @@ namespace btlquanlycuahanginternet
             btnDong.Enabled = true;
             btnTimLai.Enabled = true;
             btnHienThi.Enabled = false;
+           
         }
 
         private void btnDong_Click(object sender, EventArgs e)
         {
             this.Close();
-        } 
+        }
+
+        
     }
 }

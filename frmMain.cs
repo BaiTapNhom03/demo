@@ -83,5 +83,13 @@ namespace btlquanlycuahanginternet
             f.StartPosition = FormStartPosition.CenterScreen;
             f.Show();
         }
+
+        private void mnuTraMay_Click(object sender, EventArgs e)
+        {
+
+            frmTraMay f = new frmTraMay();
+            f.StartPosition = FormStartPosition.CenterScreen;
+            f.Show();
+        }
     }
 }

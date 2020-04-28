@@ -32,6 +32,11 @@
             this.lbTenPhong = new System.Windows.Forms.Label();
             this.btnTimKiem = new System.Windows.Forms.Button();
             this.dataGridView_ChonMay = new System.Windows.Forms.DataGridView();
+            this.MaPhong = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TenPhong = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaMay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TenMay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TinhTrang = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cboMaPhong = new System.Windows.Forms.ComboBox();
             this.txtTenPhong = new System.Windows.Forms.TextBox();
             this.txtTenKhach = new System.Windows.Forms.TextBox();
@@ -47,11 +52,10 @@
             this.txtTenMay = new System.Windows.Forms.TextBox();
             this.txtMaMay = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.MaPhong = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TenPhong = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MaMay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TenMay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TinhTrang = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtGioVao = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtNgayThue = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_ChonMay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,11 +98,45 @@
             this.MaMay,
             this.TenMay,
             this.TinhTrang});
-            this.dataGridView_ChonMay.Location = new System.Drawing.Point(12, 189);
+            this.dataGridView_ChonMay.Location = new System.Drawing.Point(12, 207);
             this.dataGridView_ChonMay.Name = "dataGridView_ChonMay";
             this.dataGridView_ChonMay.Size = new System.Drawing.Size(484, 140);
             this.dataGridView_ChonMay.TabIndex = 65;
             this.dataGridView_ChonMay.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_ChonMay_CellClick);
+            // 
+            // MaPhong
+            // 
+            this.MaPhong.DataPropertyName = "MaPhong";
+            this.MaPhong.HeaderText = "Mã Phòng";
+            this.MaPhong.Name = "MaPhong";
+            this.MaPhong.Width = 110;
+            // 
+            // TenPhong
+            // 
+            this.TenPhong.DataPropertyName = "TenPhong";
+            this.TenPhong.HeaderText = "Tên Phòng";
+            this.TenPhong.Name = "TenPhong";
+            // 
+            // MaMay
+            // 
+            this.MaMay.DataPropertyName = "MaMay";
+            this.MaMay.HeaderText = "Mã Máy";
+            this.MaMay.Name = "MaMay";
+            this.MaMay.Width = 110;
+            // 
+            // TenMay
+            // 
+            this.TenMay.DataPropertyName = "TenMay";
+            this.TenMay.HeaderText = "Tên Máy";
+            this.TenMay.Name = "TenMay";
+            this.TenMay.Width = 110;
+            // 
+            // TinhTrang
+            // 
+            this.TinhTrang.DataPropertyName = "TinhTrang";
+            this.TinhTrang.HeaderText = "Tình Trạng";
+            this.TinhTrang.Name = "TinhTrang";
+            this.TinhTrang.Width = 110;
             // 
             // cboMaPhong
             // 
@@ -203,7 +241,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.label2.Location = new System.Drawing.Point(277, 139);
+            this.label2.Location = new System.Drawing.Point(277, 142);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 79;
@@ -211,7 +249,7 @@
             // 
             // txtTenMay
             // 
-            this.txtTenMay.Location = new System.Drawing.Point(373, 132);
+            this.txtTenMay.Location = new System.Drawing.Point(373, 135);
             this.txtTenMay.Name = "txtTenMay";
             this.txtTenMay.Size = new System.Drawing.Size(103, 20);
             this.txtTenMay.TabIndex = 78;
@@ -233,45 +271,49 @@
             this.label3.TabIndex = 76;
             this.label3.Text = "Mã Máy:";
             // 
-            // MaPhong
+            // txtGioVao
             // 
-            this.MaPhong.DataPropertyName = "MaPhong";
-            this.MaPhong.HeaderText = "Mã Phòng";
-            this.MaPhong.Name = "MaPhong";
-            this.MaPhong.Width = 110;
+            this.txtGioVao.Location = new System.Drawing.Point(373, 178);
+            this.txtGioVao.Name = "txtGioVao";
+            this.txtGioVao.Size = new System.Drawing.Size(103, 20);
+            this.txtGioVao.TabIndex = 80;
             // 
-            // TenPhong
+            // label4
             // 
-            this.TenPhong.DataPropertyName = "TenPhong";
-            this.TenPhong.HeaderText = "Tên Phòng";
-            this.TenPhong.Name = "TenPhong";
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.label4.Location = new System.Drawing.Point(277, 181);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(54, 13);
+            this.label4.TabIndex = 81;
+            this.label4.Text = "Thời gian:";
             // 
-            // MaMay
+            // label5
             // 
-            this.MaMay.DataPropertyName = "MaMay";
-            this.MaMay.HeaderText = "Mã Máy";
-            this.MaMay.Name = "MaMay";
-            this.MaMay.Width = 110;
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.label5.Location = new System.Drawing.Point(28, 181);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.TabIndex = 82;
+            this.label5.Text = "Ngày Thuê:";
             // 
-            // TenMay
+            // txtNgayThue
             // 
-            this.TenMay.DataPropertyName = "TenMay";
-            this.TenMay.HeaderText = "Tên Máy";
-            this.TenMay.Name = "TenMay";
-            this.TenMay.Width = 110;
-            // 
-            // TinhTrang
-            // 
-            this.TinhTrang.DataPropertyName = "TinhTrang";
-            this.TinhTrang.HeaderText = "Tình Trạng";
-            this.TinhTrang.Name = "TinhTrang";
-            this.TinhTrang.Width = 110;
+            this.txtNgayThue.Location = new System.Drawing.Point(109, 174);
+            this.txtNgayThue.Name = "txtNgayThue";
+            this.txtNgayThue.Size = new System.Drawing.Size(102, 20);
+            this.txtNgayThue.TabIndex = 83;
             // 
             // frmChonMay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(512, 387);
+            this.Controls.Add(this.txtNgayThue);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtGioVao);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtTenMay);
             this.Controls.Add(this.txtMaMay);
@@ -326,5 +368,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MaMay;
         private System.Windows.Forms.DataGridViewTextBoxColumn TenMay;
         private System.Windows.Forms.DataGridViewTextBoxColumn TinhTrang;
+        private System.Windows.Forms.TextBox txtGioVao;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtNgayThue;
     }
 }

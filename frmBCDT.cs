@@ -74,6 +74,12 @@ namespace btlquanlycuahanginternet
         {
             string sql;
             double tong;
+            if(cboMaPhong.Text == "")
+            {
+                MessageBox.Show("Hãy nhập một điều kiện tìm kiếm!!!", "Yêu cầu ...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboMaPhong.Focus();
+                return;
+            }    
             if ((cboMaPhong.Text == "") && (cboThang.Text == "") && (cboQuy.Text == "") &&
                (txtNam.Text == ""))
             {
@@ -84,24 +90,64 @@ namespace btlquanlycuahanginternet
             if (cboMaPhong.Text != "")
                 sql = sql + " AND ThueMay.MaPhong Like '%" + cboMaPhong.Text + "%' ";
             if (cboThang.Text != "")
-                sql = sql + " AND MONTH(NgayThue) Like '%" + cboThang.Text + "%' ";
+                    sql = sql + " AND MONTH(NgayThue) Like '%" + cboThang.Text + "%' ";
             if (cboQuy.Text != "")
-                sql = sql + " AND DATEPART(quarter, NgayThue) Like '%" + cboQuy.Text + "%'";
+                    sql = sql + " AND DATEPART(quarter, NgayThue) Like '%" + cboQuy.Text + "%'";
             if (txtNam.Text != "")
-                sql = sql + "AND Year(NgayThue) Like '%" + txtNam.Text + "%'";
+                    sql = sql + "AND Year(NgayThue) Like '%" + txtNam.Text + "%'";
+            
+            
             tableBCDT = functions.GetDataToTable(sql);
             if (tableBCDT.Rows.Count == 0)
             {
                 MessageBox.Show("Không có bản ghi thỏa mãn điều kiện!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txttongtien.Text = "0";
+                lblBangChu.Text = "Bằng chữ: " + "";
+
             }
             else
             {
                 MessageBox.Show("Có " + tableBCDT.Rows.Count + " bản ghi thỏa mãn điều kiện!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Cập nhật lại tổng tiền cho báo cáo
-                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(mm,(NgayThue)) = '" + cboThang.Text + "'" +
-                    " or DATEPART(qq,(NgayThue))='" + cboQuy.Text + "'or DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'or MaPhong='" + cboMaPhong.Text + "'"));
-                txtTongDT.Text = tong.ToString();
-                lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                if(cboMaPhong.Text !="")
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where MaPhong='" + cboMaPhong.Text + "'"));
+                    txtTongDT.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboThang.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(mm,(NgayThue)) = '" + cboThang.Text + "'" +
+                    "and MaPhong='" + cboMaPhong.Text + "'"));
+                    txtTongDT.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboQuy.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where MaPhong='" + cboMaPhong.Text + "'and DATEPART(qq,(NgayThue))='" + cboQuy.Text + "'"));
+                    txtTongDT.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (txtNam.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'"));
+                    txtTongDT.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboThang.Text != "") && (txtNam.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(mm,(NgayThue)) = '" + cboThang.Text + "'" +
+                    "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'"));
+                    txtTongDT.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
+                if ((cboMaPhong.Text != "") && (cboQuy.Text != "") && (txtNam.Text != ""))
+                {
+                    tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(qq,(NgayThue)) = '" + cboQuy.Text + "'" +
+                    "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'"));
+                    txtTongDT.Text = tong.ToString();
+                    lblBangChu.Text = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+                }
             }
             tableBCDT = Class.functions.GetDataToTable(sql);
             dataGridView_BCDT.DataSource = tableBCDT;
@@ -123,7 +169,7 @@ namespace btlquanlycuahanginternet
 
             {
                 string sql;
-                sql = "SELECT MaPhong, MayTinh.MaMay, TenMay,NgayBaoTri,ThanhTien from MayTinh join ChiTietBaoTri on MayTinh.MaMay=ChiTietBaoTri.MaMay join BaoTri on ChiTietBaoTri.MaBaoTri=BaoTri.MaBaoTri";
+                sql = "SELECT ThueMay.MaPhong, ThueMay.MaMay, TenMay,NgayThue,TongTien from ThueMay join MayTinh on ThueMay.MaMay=MayTinh.MaMay";
                 tableBCDT = Class.functions.GetDataToTable(sql);
                 dataGridView_BCDT.DataSource = tableBCDT;
             }
@@ -194,17 +240,86 @@ namespace btlquanlycuahanginternet
             exRange.Value2 = "Tổng DT:";
             exRange = exSheet.Cells[cot + 1][phong + 10];
             exRange.Font.Bold = true;
-            double tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(mm, (NgayThue)) = '" + cboThang.Text + "'" +
-                " or DATEPART(qq,(NgayThue))='" + cboQuy.Text + "'or DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'or MaPhong='" + cboMaPhong.Text + "'"));
-            exRange.Value2 = tong.ToString();
-            exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
-            exRange.Range["A1:F1"].MergeCells = true;
-            exRange.Range["A1:F1"].Font.Bold = true;
-            exRange.Range["A1:F1"].Font.Italic = true;
-            exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+            double tong;
 
-            exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
-            exRange = exSheet.Cells[4][phong + 13]; //Ô A1 
+            
+            if ((cboMaPhong.Text != "") && (cboThang.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(mm,(NgayThue)) = '" + cboThang.Text + "'" +
+                "and MaPhong='" + cboMaPhong.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (cboQuy.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where MaPhong='" + cboMaPhong.Text + "'and DATEPART(qq,(NgayThue))='" + cboQuy.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (txtNam.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (cboThang.Text != "") && (txtNam.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(mm,(NgayThue)) = '" + cboThang.Text + "'" +
+                "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if ((cboMaPhong.Text != "") && (cboQuy.Text != "") && (txtNam.Text != ""))
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where DATEPART(qq,(NgayThue)) = '" + cboQuy.Text + "'" +
+                "and MaPhong='" + cboMaPhong.Text + "'and DATEPART(yyyy,(NgayThue))='" + txtNam.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+            if (cboMaPhong.Text != "")
+            {
+                tong = Convert.ToDouble(functions.GetFieldValues("select sum(TongTien) from ThueMay where MaPhong='" + cboMaPhong.Text + "'"));
+                exRange.Value2 = tong.ToString();
+                exRange = exSheet.Cells[1][phong + 11]; //Ô A1 
+                exRange.Range["A1:F1"].MergeCells = true;
+                exRange.Range["A1:F1"].Font.Bold = true;
+                exRange.Range["A1:F1"].Font.Italic = true;
+                exRange.Range["A1:F1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignRight;
+
+                exRange.Range["A1:F1"].Value = "Bằng chữ: " + functions.ChuyenSoSangChu(tong.ToString());
+            }
+
+                exRange = exSheet.Cells[4][phong + 13]; //Ô A1 
             exRange.Range["A1:C1"].MergeCells = true;
             exRange.Range["A1:C1"].Font.Italic = true;
             exRange.Range["A1:C1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;

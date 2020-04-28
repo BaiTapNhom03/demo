@@ -35,6 +35,7 @@
             this.mnuMayTinh = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThueMay = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuChonMay = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTraMay = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDMNV = new System.Windows.Forms.ToolStripMenuItem();
             this.báoCáoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuChiPhiBaoTri = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,7 +88,8 @@
             // mnuThueMay
             // 
             this.mnuThueMay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuChonMay});
+            this.mnuChonMay,
+            this.mnuTraMay});
             this.mnuThueMay.Name = "mnuThueMay";
             this.mnuThueMay.Size = new System.Drawing.Size(180, 22);
             this.mnuThueMay.Text = "Thuê máy";
@@ -98,6 +100,13 @@
             this.mnuChonMay.Size = new System.Drawing.Size(180, 22);
             this.mnuChonMay.Text = "Chọn Máy";
             this.mnuChonMay.Click += new System.EventHandler(this.mnuChonMay_Click);
+            // 
+            // mnuTraMay
+            // 
+            this.mnuTraMay.Name = "mnuTraMay";
+            this.mnuTraMay.Size = new System.Drawing.Size(180, 22);
+            this.mnuTraMay.Text = "Trả Máy";
+            this.mnuTraMay.Click += new System.EventHandler(this.mnuTraMay_Click);
             // 
             // mnuDMNV
             // 
@@ -168,7 +177,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
-            this.Text = "Chương Trình Quản Lý Internet";
+            this.Text = "Chương Trình Quản Lý Cửa Hàng Internet";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -193,5 +202,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuThueMay;
         private System.Windows.Forms.ToolStripMenuItem mnuChonMay;
         private System.Windows.Forms.ToolStripMenuItem mnuDMNV;
+        private System.Windows.Forms.ToolStripMenuItem mnuTraMay;
     }
 }

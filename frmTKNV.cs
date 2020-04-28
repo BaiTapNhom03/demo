@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using btlquanlycuahanginternet.Class;
-using COMExcel = Microsoft.Office.Interop.Excel;
 
 
 namespace btlquanlycuahanginternet
@@ -127,63 +126,6 @@ namespace btlquanlycuahanginternet
             this.Close();
         }
 
-        private void btnIn_Click(object sender, EventArgs e)
-        {
-            // Khởi động chương trình Excel
-            COMExcel.Application exApp = new COMExcel.Application();
-            COMExcel.Workbook exBook; //Trong 1 chương trình Excel có nhiều Workbook
-            COMExcel.Worksheet exSheet; //Trong 1 Workbook có nhiều Worksheet
-            COMExcel.Range exRange;
-            int may = 0, cot = 0;
-            exBook = exApp.Workbooks.Add(COMExcel.XlWBATemplate.xlWBATWorksheet);
-            exSheet = exBook.Worksheets[1];
-            // Định dạng chung
-            exRange = exSheet.Cells[1, 1];
-            exRange.Range["A1:Z300"].Font.Name = "Times new roman"; //Font chữ
-            exRange.Range["A1:B3"].Font.Size = 10;
-            exRange.Range["A1:B3"].Font.Bold = true;
-            exRange.Range["A1:B3"].Font.ColorIndex = 5; //Màu xanh da trời
-            exRange.Range["A1:A1"].ColumnWidth = 7;
-            exRange.Range["B1:B1"].ColumnWidth = 15;
-            exRange.Range["A1:B1"].MergeCells = true;
-            exRange.Range["A1:B1"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;
-            exRange.Range["A1:B1"].Value = "Cửa Hàng Internet03";
-            exRange.Range["A2:B2"].MergeCells = true;
-            exRange.Range["A2:B2"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;
-            exRange.Range["A2:B2"].Value = "Xuân Mai - Hà Nội";
-            exRange.Range["A3:B3"].MergeCells = true;
-            exRange.Range["A3:B3"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;
-            exRange.Range["A3:B3"].Value = "Điện thoại: (04)39641582";
-            exRange.Range["C2:E2"].Font.Size = 16;
-            exRange.Range["C2:E2"].Font.Bold = true;
-            exRange.Range["C2:E2"].Font.ColorIndex = 3; //Màu đỏ
-            exRange.Range["C2:E2"].MergeCells = true;
-            exRange.Range["C2:E2"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;
-            exRange.Range["C2:E2"].Value = "Danh Sách Nhân Viên";
-            //Tạo dòng tiêu đề bảng
-            exRange.Range["A6:H6"].Font.Bold = true;
-            exRange.Range["A6:H6"].HorizontalAlignment = COMExcel.XlHAlign.xlHAlignCenter;
-            exRange.Range["C6:H6"].ColumnWidth = 12;
-            exRange.Range["A6:A6"].Value = "STT";
-            exRange.Range["B6:B6"].Value = "Mã NV";
-            exRange.Range["C6:C6"].Value = "Tên NV";
-            exRange.Range["D6:D6"].Value = "Mã Ca";
-            exRange.Range["E6:E6"].Value = "Năm Sinh";
-            exRange.Range["F6:F6"].Value = "Giới Tính";
-            exRange.Range["G6:G6"].Value = "Địa Chỉ";
-            exRange.Range["H6:H6"].Value = "SĐT";
-            for (may = 0; may < tableTKNV.Rows.Count; may++)
-            {
-                //Điền số thứ tự vào cột 1 từ dòng 12
-                exSheet.Cells[1][may + 7] = may + 1;
-                for (cot = 0; cot < tableTKNV.Columns.Count; cot++)
-                //Điền thông tin hàng từ cột thứ 2, dòng 7
-                {
-                    exSheet.Cells[cot + 2][may + 7] = tableTKNV.Rows[may][cot].ToString();
-                    if (cot == 3) exSheet.Cells[cot + 2][may + 7] = tableTKNV.Rows[may][cot].ToString();
-                }
-            }
-            exApp.Visible = true;
-        }
+        
     }
 }
